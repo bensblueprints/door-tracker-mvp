@@ -1,0 +1,18 @@
+services:
+  door-tracker:
+    build: .
+    container_name: door-tracker
+    restart: unless-stopped
+    ports:
+      - "5374:5374"
+    environment:
+      - PORT=5374
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-change-me}
+      - DB_PATH=/app/data/door-tracker.db
+      - BASE_URL=${BASE_URL:-}
+      - ALLOW_SIMULATE=${ALLOW_SIMULATE:-false}
+    volumes:
+      - door-tracker-data:/app/data
+
+volumes:
+  door-tracker-data:
