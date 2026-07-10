@@ -1,6 +1,9 @@
 # ── build stage: compile better-sqlite3 + build the React frontend ──────────
 FROM node:20-alpine AS build
-RUN apk add --no-cache python3 make g++
+# py3-setuptools provides the distutils shim node-gyp 9.x needs — Alpine's
+# python3 is 3.12+, which dropped distutils from the standard library, and
+# without this the native build silently fails at gyp's configure step.
+RUN apk add --no-cache python3 py3-setuptools make g++
 WORKDIR /app
 COPY package.json package-lock.json* ./
 COPY scripts ./scripts
