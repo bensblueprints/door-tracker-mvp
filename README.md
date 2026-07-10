@@ -62,9 +62,13 @@ SQLite lives in a named volume; back up one file and you've backed up everything
 
 ## Roadmap: Phase 1 vs Phase 2
 
-**Phase 1 (this release):** the backend engine, stop-clustering algorithm, and manager web dashboard — fully functional and testable with the built-in day simulator. This is what's shipped.
+**Phase 1:** the backend engine, stop-clustering algorithm, and manager web dashboard — fully functional and testable with the built-in day simulator. Shipped.
 
-**Phase 2 (planned):** a native Capacitor Android/iOS mobile app for reps — background GPS ping every 5 minutes, visible tracking indicator, adaptive interval on low battery, manual check-in, and outcome tagging ("no answer" / "not interested" / "sale" / "callback") per stop. `POST /api/ping` (keyed by each rep's `device_key`, generated automatically when you add a rep) is the exact endpoint the Phase 2 app will call — the backend is already built to receive it.
+**Phase 2 (in progress):** the native Capacitor Android rep app, at `mobile/`. What's working today, verified end-to-end on a real emulator build (device key setup → GPS permission → live ping → shows up on the manager dashboard): sign in with a device key, foreground 5-minute location pings while the app is open, a persistent visible "Location sharing active" indicator, last-ping/status readout, and a catch-up ping the moment the app returns to the foreground after being backgrounded.
+
+**Known Phase 2 limitation, stated plainly:** reliable 5-minute pings require the app to stay open in the foreground during a shift — Android throttles JS timers once the app is minimized, so tracking pauses (not silently, the UI says so) until the rep reopens it. A true always-on background service (persistent notification + Android foreground service) is a documented future enhancement, not yet built. Manual check-in and per-stop outcome tagging ("no answer" / "not interested" / "sale" / "callback") are also not built yet. iOS has not been built or tested (requires a Mac).
+
+`POST /api/ping` (keyed by each rep's `device_key`, generated automatically when you add a rep) and `GET /api/verify-key` (used by the mobile app's setup screen to validate a key without writing a throwaway ping) are both live and CORS-enabled for the mobile app's own origin.
 
 ## Tech stack
 

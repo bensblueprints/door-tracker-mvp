@@ -99,6 +99,28 @@ async function main() {
   const badPing = await pingIn('not-a-real-key', 40, -75, Date.now());
   assert.strictEqual(badPing, 404, 'unknown device_key must 404');
 
+  console.log('3b. /api/verify-key: mobile-app setup check, CORS-enabled, no-auth');
+  const verifyBad = await fetch(`${BASE}/api/verify-key?device_key=not-a-real-key`);
+  assert.strictEqual(verifyBad.status, 404, 'verify-key must 404 for an unknown key');
+  const verifyGoodRes = await fetch(`${BASE}/api/verify-key?device_key=${deviceKey}`, {
+    headers: { Origin: 'https://localhost' }
+  });
+  assert.strictEqual(verifyGoodRes.status, 200, 'verify-key must 200 for a valid key');
+  assert.strictEqual(
+    verifyGoodRes.headers.get('access-control-allow-origin'),
+    '*',
+    'verify-key must send CORS headers for the mobile app\'s cross-origin WebView'
+  );
+  const verifyGoodData = await verifyGoodRes.json();
+  assert.strictEqual(verifyGoodData.name, 'Smoke Test Rep', 'verify-key must return the rep name');
+  {
+    const Database = require('better-sqlite3');
+    const checkDb = new Database(DB_PATH, { readonly: true });
+    const pingCount = checkDb.prepare('SELECT COUNT(*) AS n FROM pings WHERE rep_id = ?').get(repId).n;
+    checkDb.close();
+    assert.strictEqual(pingCount, 0, 'verify-key must not write a ping row (would pollute the rep\'s real route)');
+  }
+
   console.log('4. Feeding a simulated day: 12-min stop A, drive gap, 3-min stop B');
   const A = { lat: 40.0, lng: -75.0 };
   const B = { lat: 40.005, lng: -75.0 };

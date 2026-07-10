@@ -120,9 +120,25 @@ function createApp({ dbPath, adminPassword, autologinToken = null, allowSimulate
 
   app.get('/api/me', requireAuth, (req, res) => res.json({ ok: true }));
 
+  // The mobile app runs from its own packaged origin (https://localhost inside
+  // the Capacitor WebView), never the browser session the admin dashboard uses —
+  // so its two unauthenticated, device_key-scoped endpoints need CORS headers to
+  // be callable cross-origin. Scoped to just these two public routes; the
+  // session-authenticated /api/* admin routes are deliberately left without CORS
+  // (opening those to arbitrary origins would be a real CSRF-adjacent risk).
+  function allowMobileCors(req, res, next) {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.method === 'OPTIONS') return res.sendStatus(204);
+    next();
+  }
+  app.options('/api/ping', allowMobileCors);
+  app.options('/api/verify-key', allowMobileCors);
+
   // ── ping ingestion (public — keyed by a rep's device_key, no admin session) ─
   // This is the endpoint the Phase 2 mobile app will POST to every 5 minutes.
-  app.post('/api/ping', (req, res) => {
+  app.post('/api/ping', allowMobileCors, (req, res) => {
     const body = req.body || {};
     const rep = findRepByKey.get(String(body.device_key || ''));
     if (!rep) return res.status(404).json({ error: 'unknown device_key' });
@@ -141,6 +157,15 @@ function createApp({ dbPath, adminPassword, autologinToken = null, allowSimulate
       .run(rep.id, lat, lng, accuracy, battery, at, dateStringFor(at));
 
     res.status(201).json({ ok: true });
+  });
+
+  // Lets the mobile app confirm a device_key is valid during setup without
+  // writing a throwaway ping row (which would otherwise pollute the rep's
+  // real route with a stray point wherever the phone happened to be at setup time).
+  app.get('/api/verify-key', allowMobileCors, (req, res) => {
+    const rep = findRepByKey.get(String(req.query.device_key || ''));
+    if (!rep || !rep.active) return res.status(404).json({ ok: false });
+    res.json({ ok: true, name: rep.name });
   });
 
   // ── demo/dev: simulate a fake day of pings so the dashboard has data ───────

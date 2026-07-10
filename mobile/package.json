@@ -1,0 +1,31 @@
+{
+  "name": "door-tracker-mobile",
+  "version": "1.0.0",
+  "description": "Door Tracker rep app — logs in with a device key, pings location every 5 minutes while tracking is on, always shows a visible tracking indicator.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:android": "npm run build && npx cap sync android && npx cap run android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/app": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/device": "^8.0.0",
+    "@capacitor/geolocation": "^8.2.0",
+    "@capacitor/preferences": "^8.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.4.0",
+    "typescript": "^5.6.3",
+    "vite": "^6.3.5"
+  }
+}

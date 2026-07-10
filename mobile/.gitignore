@@ -1,0 +1,14 @@
+node_modules/
+dist/
+tsconfig.tsbuildinfo
+
+# Android build artifacts — keep the generated native project (android/) since
+# manual edits live there (AndroidManifest.xml permissions, network security
+# config), but exclude everything Gradle/Android Studio regenerates (build/
+# appears once per module: app/, each capacitor-*/ plugin dir, etc).
+android/.gradle/
+android/**/build/
+android/local.properties
+android/*.iml
+android/.idea/
+android/app/build/

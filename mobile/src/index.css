@@ -1,0 +1,174 @@
+:root {
+  color-scheme: dark;
+  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #09090b;
+  color: #f4f4f5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.screen {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #a1a1aa;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a1a1aa;
+  margin-bottom: 6px;
+}
+
+.field input {
+  width: 100%;
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #f4f4f5;
+  font-size: 16px;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #38bdf8;
+  color: #09090b;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+}
+
+.btn-danger {
+  background: #27272a;
+  color: #f87171;
+  border: 1px solid #3f3f46;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #a1a1aa;
+  border: 1px solid #3f3f46;
+}
+
+.error {
+  color: #f87171;
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 16px;
+}
+
+.tracking-card {
+  border-radius: 20px;
+  padding: 28px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  transition: background 0.3s;
+}
+
+.tracking-card.on {
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), rgba(24, 24, 27, 0.9));
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.tracking-card.off {
+  background: #18181b;
+  border: 1px solid #27272a;
+}
+
+.pulse-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4ade80;
+  display: inline-block;
+  margin-right: 8px;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.tracking-status {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.tracking-sub {
+  color: #a1a1aa;
+  font-size: 13px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #27272a;
+  font-size: 14px;
+}
+
+.info-row .label {
+  color: #a1a1aa;
+}
+
+.spacer { flex: 1; }
+
+.footer-note {
+  font-size: 12px;
+  color: #71717a;
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.5;
+}
