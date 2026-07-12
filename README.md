@@ -93,7 +93,7 @@ Node 20+ · Express · better-sqlite3 · React 18 · Vite · Tailwind CSS 4 · F
 
 Want the packaged Windows installer plus lifetime updates without touching a terminal? Grab the one-time bundle:
 
-**→ [https://whop.com/onetime-suite](https://whop.com/onetime-suite)**
+**→ [https://whop.com/benjisaiempire/doortracker](https://whop.com/benjisaiempire/doortracker)**
 
 ## API reference
 
